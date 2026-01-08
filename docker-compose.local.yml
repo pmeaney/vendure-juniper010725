@@ -11,7 +11,9 @@ services:
       # Bind mounts - directories from the host mapped into the container
       - ./v-db-juniper010725/pg-data-vendure-juniper:/var/lib/postgresql/data
     networks:
-      - dockernet-vendure-juniper
+      dockernet-vendure-juniper:
+        aliases:
+          - vendure-database # Adding alias to reference in project so container names can be changed if desired. Aliases might appear in project code (particularly the database alias-- used as database host name.)
 
   v-srv-juniper010725:
     build:
@@ -29,7 +31,9 @@ services:
     env_file:
       - ./my-shop-juniper/apps/server/.env.example.srv-wrk
     networks:
-      - dockernet-vendure-juniper
+      dockernet-vendure-juniper:
+        aliases:
+          - vendure-server # Adding alias to reference in project so container names can be changed if desired. Aliases might appear in project code (particularly the database alias-- used as database host name.)
 
   v-wrk-juniper010725:
     build:
@@ -46,7 +50,9 @@ services:
     env_file:
       - ./my-shop-juniper/apps/server/.env.example.srv-wrk
     networks:
-      - dockernet-vendure-juniper
+      dockernet-vendure-juniper:
+        aliases:
+          - vendure-worker # Adding alias to reference in project so container names can be changed if desired. Aliases might appear in project code (particularly the database alias-- used as database host name.)
 
   v-storefront-juniper010725:
     build:
@@ -64,7 +70,9 @@ services:
     env_file:
       - ./my-shop-juniper/apps/storefront/.env.storefront.example
     networks:
-      - dockernet-vendure-juniper
+      dockernet-vendure-juniper:
+        aliases:
+          - vendure-storefront # Adding alias to reference in project so container names can be changed if desired. Aliases might appear in project code (particularly the database alias-- used as database host name.)
 
 networks:
   dockernet-vendure-juniper:
