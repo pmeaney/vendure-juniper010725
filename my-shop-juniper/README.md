@@ -1,3 +1,7 @@
+# Below is the default readme file generated when we scaffold a venture app with `npx @vendure/create my-shop`
+
+---
+
 # my-shop-juniper
 
 A full-stack e-commerce application built with [Vendure](https://www.vendure.io/) and [Next.js](https://nextjs.org/).

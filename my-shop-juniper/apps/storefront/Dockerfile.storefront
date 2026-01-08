@@ -1,23 +1,54 @@
-# Vendure Storefront -- NextJS based
-FROM node:20-alpine AS base
-
-FROM base AS deps
+# Base stage - common dependencies
+FROM node:20-slim AS base
 WORKDIR /app
+
+# Dependencies stage
+FROM base AS deps
 COPY package.json package-lock.json* ./
 RUN npm ci
 
+# Development stage - for local development
+FROM base AS dev
+COPY package.json package-lock.json* ./
+RUN npm ci
+COPY . .
+EXPOSE 3001
+ENV PORT=3001
+CMD ["npm", "run", "dev"]
+
+# Builder stage - builds the production app
 FROM base AS builder
-WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
+
+# Next.js collects telemetry data - disable it
+ENV NEXT_TELEMETRY_DISABLED=1
+
 RUN npm run build
 
-FROM base AS runner
+# Production runner stage - optimized production image with standalone output
+FROM base AS prod
 WORKDIR /app
-ENV NODE_ENV=production
 
-COPY --from=builder /app/public ./public
-COPY --from=builder /app/.next/standalone ./
-COPY --from=builder /app/.next/static ./.next/static
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV PORT=3001
+ENV HOSTNAME="0.0.0.0"
+
+# Create non-root user for security
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 nextjs
+
+# Copy standalone output from builder
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/public ./public
+
+USER nextjs
 
 EXPOSE 3001
+
+# Standalone output creates a server.js file. 
+# So, we need to use this for stand alone mode, rather than `npm run build` then `npm run start`
+# otherwise we'll get an error
+CMD ["node", "server.js"]

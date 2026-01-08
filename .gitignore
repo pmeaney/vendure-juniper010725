@@ -17,8 +17,8 @@ dist/
 # .env
 # **/.env.*
 # Keeping the dev & example envs in, since just use locally
-!**/.env.example
-!**/dev.env
+# !**/.env.example
+# !**/dev.env
 
 # Deployment-related
 .vercel

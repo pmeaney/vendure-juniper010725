@@ -8,66 +8,64 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      # Bind mounts - directories from your host mapped into the container
+      # Bind mounts - directories from the host mapped into the container
       - ./v-db-juniper010725/pg-data-vendure-juniper:/var/lib/postgresql/data
     networks:
       - dockernet-vendure-juniper
 
   v-srv-juniper010725:
     build:
-      context: ./apps/server
+      context: ./my-shop-juniper/apps/server
       dockerfile: Dockerfile.server
+      target: dev # runs dev stage in its Dockerfile-- which includes CMD. Prod stage will be run via CICD
     ports:
       - 3000:3000
-    command: ["npm", "run", "start:server"]
     volumes:
-      - /usr/src/app
-    environment:
-    # DB_HOST will be some part of this... probably just container name.
-    # DATABASE_URI=postgres://payloadcms-051625grey-user:payloadcmsPass@payloadcms-db-051625grey:5432/payloadcms-db-051625grey
-      DB_HOST: v-db-juniper010725
-      DB_PORT: 5432
-      DB_NAME: vendure_db
-      DB_USERNAME: vendure_db_user
-      DB_PASSWORD: vendure_db_pass
+      # Mount source code for hot reload
+      - ./my-shop-juniper/apps/server:/usr/src/app
+      # Prevent overwriting node_modules and build artifacts from container
+      - /usr/src/app/node_modules
+      - /usr/src/app/dist
+    env_file:
+      - ./my-shop-juniper/apps/server/.env.example.srv-wrk
     networks:
       - dockernet-vendure-juniper
 
   v-wrk-juniper010725:
     build:
-      context: ./apps/server
+      context: ./my-shop-juniper/apps/server
       dockerfile: Dockerfile.worker
-    command: ["npm", "run", "start:worker"]
+      target: dev # runs dev stage in its Dockerfile-- which includes CMD. Prod stage will be run via CICD
+    # No ports exposed - worker only processes background jobs via job queue (accessed from DB rather than backend server)
     volumes:
-      - /usr/src/app
-    environment:
-      DB_HOST: v-db-juniper010725
-      DB_PORT: 5432
-      DB_NAME: vendure_db
-      DB_USERNAME: vendure_db_user
-      DB_PASSWORD: vendure_db_pass
+      # Mount source code for hot reload
+      - ./my-shop-juniper/apps/server:/usr/src/app
+      # Prevent overwriting node_modules and build artifacts from container
+      - /usr/src/app/node_modules
+      - /usr/src/app/dist
+    env_file:
+      - ./my-shop-juniper/apps/server/.env.example.srv-wrk
     networks:
       - dockernet-vendure-juniper
 
   v-storefront-juniper010725:
     build:
-      context: ./apps/server
+      context: ./my-shop-juniper/apps/storefront
       dockerfile: Dockerfile.storefront
+      target: dev # runs dev stage in its Dockerfile-- which includes CMD. Prod stage will be run via CICD
     ports:
-      - 3001:3001
-    command: ["npm", "run", "start:server"]
+      - 3001:3001  # Storefront accessible at localhost:3001
     volumes:
-      - /usr/src/app
-    environment:
-    # DB_HOST will be some part of this... probably just container name.
-    # DATABASE_URI=postgres://payloadcms-051625grey-user:payloadcmsPass@payloadcms-db-051625grey:5432/payloadcms-db-051625grey
-      DB_HOST: v-db-juniper010725
-      DB_PORT: 5432
-      DB_NAME: vendure_db
-      DB_USERNAME: vendure_db_user
-      DB_PASSWORD: vendure_db_pass
+      # Mount source code for hot reload
+      - ./my-shop-juniper/apps/storefront:/app
+      # Prevent overwriting node_modules and build artifacts from container
+      - /app/node_modules
+      - /app/.next
+    env_file:
+      - ./my-shop-juniper/apps/storefront/.env.storefront.example
     networks:
       - dockernet-vendure-juniper
+
 networks:
   dockernet-vendure-juniper:
     name: dockernet-vendure-juniper
