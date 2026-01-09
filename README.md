@@ -1,6 +1,6 @@
 # Vendure Project - Monorepo 
 
-This project will be an initial draft of an Vendure ecommerce project. It's dockerized for easy CICD deployment.  It has Docker-compose files for easy local development spin-up.
+This project will be an initial draft of an Vendure ecommerce project. It's containerized (docker) for easy CICD deployment.  It has a docker-compose file for easy local development spin-up.
 
 Run it locally:
 
