@@ -25,10 +25,13 @@ services:
       - 5173:5173
     volumes:
       # Mount source code for hot reload
-      - ./my-shop-juniper/apps/server:/usr/src/app
+      - ./my-shop-juniper/apps/server:/usr/src/app # bind mount
       # Prevent overwriting node_modules and build artifacts from container
-      - /usr/src/app/node_modules
-      - /usr/src/app/dist
+      # - /usr/src/app/node_modules # anonymous volume
+      # - /usr/src/app/dist         # anonymous volume
+      # going with named volumes instead of anonymous volumes.  The anon volumes should have overriden the bind mount for their paths, but they aren't always reliable
+      - server-node-modules:/usr/src/app/node_modules  # ← Named
+      - server-dist:/usr/src/app/dist                   # ← Named
     env_file:
       - ./my-shop-juniper/apps/server/.env.example.srv-wrk
     networks:
@@ -46,8 +49,11 @@ services:
       # Mount source code for hot reload
       - ./my-shop-juniper/apps/server:/usr/src/app
       # Prevent overwriting node_modules and build artifacts from container
-      - /usr/src/app/node_modules
-      - /usr/src/app/dist
+      # - /usr/src/app/node_modules  # anonymous volume
+      # - /usr/src/app/dist            # anonymous volume
+      # going with named volumes instead of anonymous volumes.  The anon volumes should have overriden the bind mount for their paths, but they aren't always reliable
+      - worker-node-modules:/usr/src/app/node_modules  # ← Named
+      - worker-dist:/usr/src/app/dist                   # ← Named
     env_file:
       - ./my-shop-juniper/apps/server/.env.example.srv-wrk
     networks:
@@ -64,10 +70,13 @@ services:
       - 3001:3001  # Storefront accessible at localhost:3001
     volumes:
       # Mount source code for hot reload
-      - ./my-shop-juniper/apps/storefront:/app
+      - ./my-shop-juniper/apps/storefront:/app # bind mount
       # Prevent overwriting node_modules and build artifacts from container
-      - /app/node_modules
-      - /app/.next
+      # - /app/node_modules # anonymous volume
+      # - /app/.next        # anonymous volume
+      # going with named volumes instead of anonymous volumes.  The anon volumes should have overriden the bind mount for their paths, but they aren't always reliable
+      - storefront-node-modules:/app/node_modules  # ← Named volume
+      - storefront-next:/app/.next                 # ← Named volume
     env_file:
       - ./my-shop-juniper/apps/storefront/.env.storefront.example
     networks:
@@ -78,3 +87,11 @@ services:
 networks:
   dockernet-vendure-juniper:
     name: dockernet-vendure-juniper
+
+volumes:
+  storefront-node-modules:
+  storefront-next:
+  server-node-modules:
+  server-dist:
+  worker-node-modules:
+  worker-dist:
