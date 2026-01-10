@@ -12,7 +12,6 @@ FROM base AS dev
 COPY package.json package-lock.json* ./
 RUN npm ci
 COPY . .
-EXPOSE 3000
 CMD ["npm", "run", "dev"]
 
 # Builder stage - builds the production app
@@ -36,7 +35,5 @@ COPY --from=builder --chown=vendure:nodejs /usr/src/app/node_modules ./node_modu
 COPY --from=builder --chown=vendure:nodejs /usr/src/app/package.json ./package.json
 
 USER vendure
-
-EXPOSE 3000
 
 CMD ["npm", "run", "start:worker"]
