@@ -30,7 +30,9 @@ There was no simple turn-key command to allow a new developer joining the team t
 All nuts & bolts are included, and it can be started with just one command. That one command installs all dependencies-- of the various applications: serverside, clientside, database, and operating system. The app is decoupled from and irrespective of the host OS, making it more portable, and more easy to setup for a new developer joining the team in developing the business application:
 
 ```bash
-docker compose up
+docker compose up 
+# or, if using a filename other than docker-compose.yml, such as I do, for specificity:
+docker compose -f docker-compose.local.yml up
 ```
 
 Not like we faced at CDK Global: "Go to the confluence page. Follow the 10+ steps. If the steps need updating, update the doc. Let us know if you can get it all installed. If you can get it installed, start it up.  Next try to log in and see if it works."  At every step, a typical new developer faced errors.  It typically took a new developer a few days to get it working, interspersed with other onboarding work.  They usually had to ping other developers for help, simply to get it installed.
