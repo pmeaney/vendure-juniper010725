@@ -50,6 +50,20 @@ The Dockerfile is itself documentation of what the application needs to run. The
 
 Need a new server? Need a new laptop? No worries-- it's easy to boot it back up no matter the environment and bam-- you can quickly get to work.
 
+## 5. Transferring the company to a new owner
+
+Some of my projects are for commercial purposes-- such as for Vendure: To create a company which sells products in its e-commerce store.
+
+Transferring the application is more simple and more sellable, if it's packaged.
+
+If I ever sell the company, I don't want to say:
+
+"Here are the dependencies you'll need to install." or "Here are the instuctructions to get the app up and running".
+
+I'd rather say:
+
+"Running the app is easy-- just run this one command. Deploying it is also easy-- the deployment app is fully packaged up and is the same as what gets built locally."
+
 
 ## Conclusion:
 
