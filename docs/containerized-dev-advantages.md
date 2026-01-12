@@ -18,7 +18,7 @@ TLDR of the advantages of containerizing the app for use with all environments (
 - Environment-agnostic
 - Isolated
 - Reproducible
-- Portable (more conducive to business exit-- that is, for the business app built (using the framework) to sell their E-Commerce Business to the new buyer, as a portable package)
+- Portable (more conducive to business exit-- that is, for the business owner (or developer) who built the app (using the Vendure framework) to sell their E-Commerce Business to the new buyer, as a portable package)
 
 # Advantages in detail:
 
