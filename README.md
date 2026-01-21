@@ -11,6 +11,10 @@ To clean up:
 - break out with control-c
 - `docker compose -f docker-compose.local.yml down -v`
   
+## Build / Teardown notes
+
+Note to self:
+Due to how this project is built... When re-building it, you may need to delete node_modules and package-lock.json if doing a docker image re-build.  This is because the project's dockerfiles are setup to run its `npm install` from within the container, rather than within the local OS (macOS developer laptop).  The reason is to keep the dependencies consistent with what will exist on the web server.  If the project is installed from the local OS (macOS) at least one of its dependencies (lightningcss) will be built based on its ARM dependency, rather than Linux x64 dependency and subsequently that will be in noted in the package-lock.json file.
 
 # Explanation of Project Components - Local Development
 
