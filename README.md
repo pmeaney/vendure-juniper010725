@@ -11,7 +11,12 @@ To clean up:
 - break out with control-c
 - `docker compose -f docker-compose.local.yml down -v`
   
-## Build / Teardown notes
+
+# TO DO
+
+- Research: docker not generating package-lock.json
+- Ensure package-lock.json is generated locally on docker compose up command, but from the Docker container itself so that the dependencies are based on the docker container's OS.
+
 
 #### 1/21/26 having issues from cafe-- docker image downloads seem to be limited by router or ISP
 
