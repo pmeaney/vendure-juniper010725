@@ -5,7 +5,9 @@ This project will be an initial draft of an Vendure ecommerce project. It's cont
 Run it locally:
 
 - Clone project
-- Generate Linux-compatible lockfiles: `./generate-lockfiles.sh`
+- Generate Linux-compatible lockfiles: 
+  - `chmod +x generate-lockfiles.sh`
+  - `./generate-lockfiles.sh`
   - **Why:** Creates `package-lock.json` files with Linux-compatible binaries (required for Docker containers). This ensures dependencies like `lightningcss`* work correctly in the containerized environment.
   - **When to run:** 
     - First time setting up the project (lockfiles don't exist in repo yet)
