@@ -2,7 +2,7 @@
 
 - Setup postgresl docker-compose file & env file.
 - Spin it up w/: `docker compose -f docker-compose.local.yml up -d`
-- Check it out via postgres CLI login: `docker exec -it vendure-db-juniper010725 psql -U vendure_db_user -d vendure_db`
+- Check it out via postgres CLI login: `docker exec -it vendure-db-juniper010726 psql -U vendure_db_user -d vendure_db`
 - Explore a bit:
   ```postgres
   \l # list databases

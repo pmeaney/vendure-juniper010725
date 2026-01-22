@@ -29,7 +29,7 @@ TLDR of the advantages of containerizing the app for use with all environments (
 ### B. This helps catch production issues early as well
 For example, I hit a lightningcss binary issue: initially, I installed on my MacOS. npm, sensing an ARM Mac OS, installed `lightningcss-darwin-arm64`, but the container's Linux OS was looking for `lightningcss-linux-arm64-gnu`-- causing an error.
 
-**Solution:** Install the project from inside container on first startup, via conditional if statement in the Dockerfile (see [line 19](https://github.com/pmeaney/vendure-juniper010725/blob/main/my-shop-juniper/apps/storefront/Dockerfile.storefront#L19))
+**Solution:** Install the project from inside container on first startup, via conditional if statement in the Dockerfile (see [line 19](https://github.com/pmeaney/vendure-juniper010726/blob/main/my-shop-juniper/apps/storefront/Dockerfile.storefront#L19))
 
 ### C. My Engineering team at CDK Global ran into a big problem with our 15-year old ruby-based software
 For context: at my most recent company, CDK Global, which makes Auto Dealership Software (for Sales, Operations HR, and Managing Communications with Manufacturers), I joined as a Full Stack Dev & Later transitioned to DevOps

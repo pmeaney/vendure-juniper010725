@@ -1,21 +1,21 @@
 # This is for local dev (e.g. laptop) development
 services:
-  v-db-juniper010725:
+  v-db-juniper010726:
     image: postgres:16-alpine
-    container_name: v-db-juniper010725
+    container_name: v-db-juniper010726
     env_file:
-      - ./v-db-juniper010725/.env.local.db.example
+      - ./v-db-juniper010726/.env.local.db.example
     ports:
       - "5432:5432"
     volumes:
       # Bind mounts - directories from the host mapped into the container
-      - ./v-db-juniper010725/pg-data-vendure-juniper:/var/lib/postgresql/data
+      - ./v-db-juniper010726/pg-data-vendure-juniper:/var/lib/postgresql/data
     networks:
       dockernet-vendure-juniper:
         aliases:
           - vendure-database # Adding alias to reference in project so container names can be changed if desired. Aliases might appear in project code (particularly the database alias-- used as database host name.)
 
-  v-srv-juniper010725:
+  v-srv-juniper010726:
     build:
       context: ./my-shop-juniper/apps/server
       dockerfile: Dockerfile.server
@@ -39,7 +39,7 @@ services:
         aliases:
           - vendure-server # Adding alias to reference in project so container names can be changed if desired. Aliases might appear in project code (particularly the database alias-- used as database host name.)
 
-  v-wrk-juniper010725:
+  v-wrk-juniper010726:
     build:
       context: ./my-shop-juniper/apps/server
       dockerfile: Dockerfile.worker
@@ -61,7 +61,7 @@ services:
         aliases:
           - vendure-worker # Adding alias to reference in project so container names can be changed if desired. Aliases might appear in project code (particularly the database alias-- used as database host name.)
 
-  v-storefront-juniper010725:
+  v-storefront-juniper010726:
     build:
       context: ./my-shop-juniper/apps/storefront
       dockerfile: Dockerfile.storefront

@@ -96,9 +96,9 @@ Vendure's server docker-compose file shows it connects to the its postgres conta
 
 Locally, we may change "6543:5432" to "localhost:5432" or just leave it as 6543:5432.  It probably won't matter-- as long as it runs.
 
-On the remote, live, internet-traffic-receiving server, Vendure will connect to the postgres DB via its container name (which. may be set as "host address" within vendure).  Within the docker config (i.e. CICD docker run statement), we'll likely feed it a DB_HOST=<pg container name> (i.e. DB_HOST=vendure-db-juniper010725) env var (via -e flag, or similar env var flag during the docker run statement)
+On the remote, live, internet-traffic-receiving server, Vendure will connect to the postgres DB via its container name (which. may be set as "host address" within vendure).  Within the docker config (i.e. CICD docker run statement), we'll likely feed it a DB_HOST=<pg container name> (i.e. DB_HOST=vendure-db-juniper010726) env var (via -e flag, or similar env var flag during the docker run statement)
 
 4. database address
 
 Initially, localhost should work.
-Once we network the docker containers together, we'll need to set the DB_HOST as vendure-db-juniper010725
+Once we network the docker containers together, we'll need to set the DB_HOST as vendure-db-juniper010726
