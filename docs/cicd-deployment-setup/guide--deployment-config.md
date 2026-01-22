@@ -1,16 +1,34 @@
 # Guide to Configuring: Vendure.io Containerized CICD Deployment via Github Actions
 
+This guide currently covers the **initial prototype** production deployment.
+
+After I get this initial deployment done and explore how to configure vendure for my use case, I'll then review in further detail documentation including:
+- https://docs.vendure.io/guides/deployment/production-configuration/
+- https://docs.vendure.io/guides/developer-guide/security
+
+## CICD Setup for Github Actions
+
 This project's CICD deployment uses the following secrets.
 They must be setup in the repo's secrets.
 
-
 Set up the following **repository secrets** in the repo.  Be sure that the ones labeled _ENV_FILE use the production, super secret env vars-- not the ones from the default or example env var files.
 (example env var files: for local dev on developer's MacOS laptop; default env var files: during CICD these are parsed and set into the project's app container images when they're built and published. Then in a later CICD step, when the containers are built from the images and run-- when they're run, the containers are injected with the secret production env var files)
+
+#### Regarding the Env Var files
+
+- **Initially**, when testing out all the secrets work-- Just copy in the example env vars for each of these _ENV_FILE repo secrets
+- Later, **after verifying with a test CICD workflow that all the secrets show up**... Overwrite these _ENV_FILE items' values with the real for the production secrets.  And be sure they use scrambled passwords-- and be sure to copy the production ones into 1pass
+
+### Secrets to upload
+
+   - `POSTGRES__SECRET_ENV_FILE`: environment variables for Database  
+     - Be sure to setup a unique password in the prod env var file
+   - `STOREFRONT__SECRET_ENV_FILE`: environment variables for storefront.  
+     - Be sure to check out the `.env.local.storefront.example-guided` file-- because you'll want to generate a unique REVALIDATION_SECRET via the command `openssl rand -base64 32` for the prod secret.
+   - `SRV_WRK__SECRET_ENV_FILE`: environment variables for vendure server & worker (one file, used for both)
+     - Be sure to set new, unique values for SUPERADMIN_USERNAME, SUPERADMIN_PASSWORD, and that the DB_ items match the ones from the `POSTGRES__SECRET_ENV_FILE`.  And set APP_ENV to 'prod' instead of 'dev'.  For more info: https://docs.vendure.io/guides/deployment/production-configuration/ (note the use of 'prod' as the env name, in the info regarding the hardening plugin-- which is why I assume it should be 'prod' and not 'production'.)
    - `LINUX_BOTCICDGHA_USERNAME`: Username for SSH access
    - `LINUX_SERVER_IPADDRESS`: IP address of deployment server
-   - `POSTGRES__SECRET_ENV_FILE`: environment variables for Database
-   - `STOREFRONT__SECRET_ENV_FILE`: environment variables for storefront
-   - `SRV_WRK__SECRET_ENV_FILE`: environment variables for vendure server & worker (one file, used for both)
    - `GHPATCICD_RPOWKFLO_WRDPCKGS`: GitHub Personal Access Token with repository, workflow, and package read/write permissions
    - `LINUX_SSH_PRIVATE_KEY_CICD`: SSH key for deployment server access.  See below for steps to set this up.
 

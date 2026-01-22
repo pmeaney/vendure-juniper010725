@@ -2,6 +2,78 @@
 
 This project will be an initial draft of an Vendure ecommerce project. It's containerized (docker) for easy CICD deployment.  It has a docker-compose file for easy local development spin-up.
 
+###
+
+
+## Version Benchmarks
+
+**v1.0 - Local Development** ✅ (01/22/26)
+- Fully functional local development environment
+- Docker Compose setup working
+- Basic configuration complete
+```bash
+git tag -a v1.0-local-dev -m "Local development environment complete"
+git push origin v1.0-local-dev
+```
+
+**Between v1.0 and v2.0:**
+- ✅ Initial Linux server hardening (UFW firewall, Fail2ban)
+- ✅ Nginx Proxy Manager setup
+- ✅ SSH key-only authentication
+- ✅ Kernel hardening via sysctl
+
+**v2.0 - Prototype Production** 🚧 (Target: TBD)
+- CI/CD pipeline functional
+- Production environment variables configured
+- Mid-level Server Security (Debian Linux server deployed via Terraform with basic security features: UFW, Fail2ban, SSH key auth only, kernel hardening)
+- Mid-level App Deployment Security (changed credentials, proper secrets management)
+- NOT hardened for public production use
+```bash
+git tag -a v2.0-prototype-prod -m "Prototype production deployment complete"
+git push origin v2.0-prototype-prod
+```
+
+**Between v2.0 and v3.0 - Security Hardening Roadmap:**
+
+*Application-Level (Vendure):*
+- 🔒 HardenPlugin configured (prevents GraphQL query attacks)
+- 🔒 UuidIdStrategy implementation (non-sequential IDs)
+- 🔒 Custom PasswordValidationStrategy (enforce strong passwords)
+- 🔒 Rate limiting on API endpoints (prevent brute force)
+- 🔒 AssetServerPlugin hardening with PresetOnlyStrategy (prevent image transform abuse)
+
+*Infrastructure-Level:*
+- 🔒 Cloudflare integration (DDoS protection, CDN, WAF)
+- 🔒 Cloudflare WAF rules configured (block malicious patterns)
+- 🔒 Database connection limits (prevent connection exhaustion)
+- 🔒 Container resource limits (prevent DoS via resource consumption)
+- 🔒 Database timezone verification (UTC)
+- 🔒 Trust proxy configuration for Express
+- 🔒 Automated backup strategy (database and volumes)
+- 🔒 Automated uptime monitoring (UptimeRobot or similar)
+
+*Monitoring & Observability:*
+- 🔒 Error tracking integration (Sentry or similar)
+- 🔒 Log aggregation (centralized logging)
+- 🔒 Security event monitoring (Vendure EventBus)
+
+*Network/Docker:*
+- 🔒 Docker network isolation (separate networks per service)
+- 🔒 Non-root container users (run containers as non-root)
+- 🔒 Image vulnerability scanning (scan Docker images)
+
+*Compliance:*
+- 🔒 OWASP Top 10 compliance review
+
+**v3.0 - Production Hardened** 📋 (Target: TBD)
+- All v2.0 features plus additional security hardening
+- Public-facing production ready
+- Full security audit
+```bash
+git tag -a v3.0-production -m "Production-ready hardened deployment"
+git push origin v3.0-production
+```
+
 ## Run it locally:
 
 - Clone project
