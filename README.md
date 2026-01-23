@@ -48,7 +48,6 @@ git push origin v2.0-prototype-prod
 *Application-Level (Vendure):*
 - 🔒 HardenPlugin configured (prevents GraphQL query attacks)
 - 🔒 Rate limiting on API endpoints (prevent brute force)
-- 🔒 Default credentials changed (superadmin, database)
 
 *Infrastructure-Level:*
 - 🔒 Cloudflare integration (DDoS protection, CDN, SSL)
