@@ -42,53 +42,37 @@ git tag -a v2.0-prototype-prod -m "Prototype production deployment complete"
 git push origin v2.0-prototype-prod
 ```
 
-**Between v2.0 and v3.0 - Security Hardening & Payment Activation:**
+
+**Between v2.0 and v3.0 - Essential Security & Payment Activation:**
 
 *Application-Level (Vendure):*
 - 🔒 HardenPlugin configured (prevents GraphQL query attacks)
-- 🔒 UuidIdStrategy implementation (non-sequential IDs)
-- 🔒 Custom PasswordValidationStrategy (enforce strong passwords)
 - 🔒 Rate limiting on API endpoints (prevent brute force)
-- 🔒 AssetServerPlugin hardening with PresetOnlyStrategy (prevent image transform abuse)
+- 🔒 Default credentials changed (superadmin, database)
 
 *Infrastructure-Level:*
-- 🔒 Cloudflare integration (DDoS protection, CDN, WAF)
-- 🔒 Cloudflare WAF rules configured (block malicious patterns)
-- 🔒 Database connection limits (prevent connection exhaustion)
-- 🔒 Container resource limits (prevent DoS via resource consumption)
+- 🔒 Cloudflare integration (DDoS protection, CDN, SSL)
+- 🔒 Basic Cloudflare WAF rules (5 free rules)
 - 🔒 Database timezone verification (UTC)
 - 🔒 Trust proxy configuration for Express
-- 🔒 Automated backup strategy (database and volumes)
-- 🔒 Automated uptime monitoring (UptimeRobot or similar)
-
-*Monitoring & Observability:*
-- 🔒 Error tracking integration (Sentry or similar)
-- 🔒 Log aggregation (centralized logging)
-- 🔒 Security event monitoring (Vendure EventBus)
-
-*Network/Docker:*
-- 🔒 Docker network isolation (separate networks per service)
-- 🔒 Non-root container users (run containers as non-root)
-- 🔒 Image vulnerability scanning (scan Docker images)
-
-*Compliance:*
-- 🔒 OWASP Top 10 compliance review
+- 🔒 Weekly automated database backups
+- 🔒 Uptime monitoring (UptimeRobot free tier)
+- 🔒 Container resource limits (prevent runaway processes)
 
 *Payment Activation:*
 - 💳 Switch Stripe to live mode (production API keys)
 - 💳 Switch PayPal to live mode
 - 💳 Test live transactions ($1 test purchases)
 - 💳 Verify webhook handling in production
-- 💳 Monitor for payment issues
 
-**v3.0 - Production Hardened** 📋 (Target: TBD)
-- All v2.0 features plus complete security hardening
+**v3.0 - Production Ready** 📋 (Target: TBD)
+- All v2.0 features plus essential security hardening
 - Payment providers: Live mode active and tested
 - Public-facing production ready
-- Full security audit complete
 - Ready to accept real customer orders
+- **Time investment: 1-2 weeks (10-15 hours)**
 ```bash
-git tag -a v3.0-production -m "Production-ready hardened deployment"
+git tag -a v3.0-production -m "Production-ready deployment complete"
 git push origin v3.0-production
 ```
 
