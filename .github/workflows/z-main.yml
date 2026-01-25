@@ -24,7 +24,7 @@ jobs:
   # Server deployment (depends on DB)
   server:
     needs: database
-    uses: ./.github/workflows/server-deploy.yml
+    uses: ./.github/workflows/vendure-server-deploy.yml
     permissions:
       contents: write
       actions: write
@@ -38,7 +38,7 @@ jobs:
   # # Worker deployment (depends on Server)
   # worker:
   #   needs: server
-  #   uses: ./.github/workflows/worker-deploy.yml
+  #   uses: ./.github/workflows/vendure-worker-deploy.yml
   #   permissions:
   #     contents: write
   #     actions: write
@@ -52,7 +52,7 @@ jobs:
   # # Storefront deployment (depends on Worker)
   # storefront:
   #   needs: worker
-  #   uses: ./.github/workflows/storefront-deploy.yml
+  #   uses: ./.github/workflows/vendure-storefront-deploy.yml
   #   permissions:
   #     contents: write
   #     actions: write
