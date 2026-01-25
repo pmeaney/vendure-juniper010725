@@ -22,18 +22,18 @@ jobs:
       POSTGRES__SECRET_ENV_FILE: ${{ secrets.POSTGRES__SECRET_ENV_FILE }}
 
   # Server deployment (depends on DB)
-  # server:
-  #   needs: database
-  #   uses: ./.github/workflows/server-deploy.yml
-  #   permissions:
-  #     contents: write
-  #     actions: write
-  #   secrets:
-  #     LINUX_SSH_PRIVATE_KEY_CICD: ${{ secrets.LINUX_SSH_PRIVATE_KEY_CICD }}
-  #     LINUX_BOTCICDGHA_USERNAME: ${{ secrets.LINUX_BOTCICDGHA_USERNAME }}
-  #     LINUX_SERVER_IPADDRESS: ${{ secrets.LINUX_SERVER_IPADDRESS }}
-  #     GHPAT_AS_CICD_SECRET: ${{ secrets.GHPATCICD_VendureRepo_010726 }}
-  #     SRV_WRK__SECRET_ENV_FILE: ${{ secrets.SRV_WRK__SECRET_ENV_FILE }}
+  server:
+    needs: database
+    uses: ./.github/workflows/server-deploy.yml
+    permissions:
+      contents: write
+      actions: write
+    secrets:
+      LINUX_SSH_PRIVATE_KEY_CICD: ${{ secrets.LINUX_SSH_PRIVATE_KEY_CICD }}
+      LINUX_BOTCICDGHA_USERNAME: ${{ secrets.LINUX_BOTCICDGHA_USERNAME }}
+      LINUX_SERVER_IPADDRESS: ${{ secrets.LINUX_SERVER_IPADDRESS }}
+      GHPAT_AS_CICD_SECRET: ${{ secrets.GHPATCICD_VendureRepo_010726 }}
+      SRV_WRK__SECRET_ENV_FILE: ${{ secrets.SRV_WRK__SECRET_ENV_FILE }}
 
   # # Worker deployment (depends on Server)
   # worker:
