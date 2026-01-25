@@ -109,50 +109,104 @@ jobs:
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
 
-          # Function to show service info
-          show_service() {
-            local service=$1
-            local icon=$2
-            local container=$3
-            local dir=$4
-            
-            echo "## ${icon} ${service} (${container})" >> $GITHUB_STEP_SUMMARY
-            
-            # Get last deployed info
-            if [ -f "./deployment-markers/${service}-last-commit.txt" ]; then
-              LAST_COMMIT=$(cat ./deployment-markers/${service}-last-commit.txt)
-              LAST_SHORT=$(git rev-parse --short $LAST_COMMIT)
-              LAST_DATE=$(git show -s --format=%ci $LAST_COMMIT)
-              CHANGES=$(git diff --name-only $LAST_COMMIT $CURRENT_COMMIT -- ./${dir} | wc -l)
-            else
-              LAST_SHORT="N/A"
-              LAST_DATE="First deployment"
-              CHANGES="N/A"
-            fi
-            
-            echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
-            echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
-            echo "| **Last deployed** | \`${LAST_SHORT}\` (${LAST_DATE}) |" >> $GITHUB_STEP_SUMMARY
-            echo "| **Changes detected** | ${{ needs.${service}.outputs.had_changes }} |" >> $GITHUB_STEP_SUMMARY
-            echo "| **Files changed** | ${CHANGES} |" >> $GITHUB_STEP_SUMMARY
-            echo "| **Action taken** | ${{ needs.${service}.outputs.action_taken }} |" >> $GITHUB_STEP_SUMMARY
-            
-            # Show changed files if deployed
-            if [[ "${{ needs.${service}.outputs.had_changes }}" == "true" ]]; then
-              echo "" >> $GITHUB_STEP_SUMMARY
-              echo "**Changed files:**" >> $GITHUB_STEP_SUMMARY
-              echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-              if [ -f "./deployment-markers/${service}-last-commit.txt" ]; then
-                git diff --name-only $LAST_COMMIT $CURRENT_COMMIT -- ./${dir} >> $GITHUB_STEP_SUMMARY
-              else
-                echo "First deployment - all files are new" >> $GITHUB_STEP_SUMMARY
-              fi
-              echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
-            fi
-            echo "" >> $GITHUB_STEP_SUMMARY
-          }
+        # # Server
+        # echo "## 🖥️ Server (vendure-server-juniper010726)" >> $GITHUB_STEP_SUMMARY
+        
+        # if [ -f "./deployment-markers/server-last-commit.txt" ]; then
+        #   LAST_COMMIT=$(cat ./deployment-markers/server-last-commit.txt)
+        #   LAST_SHORT=$(git rev-parse --short $LAST_COMMIT)
+        #   LAST_DATE=$(git show -s --format=%ci $LAST_COMMIT)
+        #   CHANGES=$(git diff --name-only $LAST_COMMIT $CURRENT_COMMIT -- ./my-shop-juniper/apps/server | wc -l)
+        # else
+        #   LAST_SHORT="N/A"
+        #   LAST_DATE="First deployment"
+        #   CHANGES="N/A"
+        # fi
+        
+        # echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+        # echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+        # echo "| **Last deployed** | \`${LAST_SHORT}\` (${LAST_DATE}) |" >> $GITHUB_STEP_SUMMARY
+        # echo "| **Changes detected** | ${{ needs.server.outputs.had_changes }} |" >> $GITHUB_STEP_SUMMARY
+        # echo "| **Files changed** | ${CHANGES} |" >> $GITHUB_STEP_SUMMARY
+        # echo "| **Action taken** | ${{ needs.server.outputs.action_taken }} |" >> $GITHUB_STEP_SUMMARY
+        
+        # if [[ "${{ needs.server.outputs.had_changes }}" == "true" ]]; then
+        #   echo "" >> $GITHUB_STEP_SUMMARY
+        #   echo "**Changed files:**" >> $GITHUB_STEP_SUMMARY
+        #   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        #   if [ -f "./deployment-markers/server-last-commit.txt" ]; then
+        #     git diff --name-only $LAST_COMMIT $CURRENT_COMMIT -- ./my-shop-juniper/apps/server >> $GITHUB_STEP_SUMMARY
+        #   else
+        #     echo "First deployment - all files are new" >> $GITHUB_STEP_SUMMARY
+        #   fi
+        #   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        # fi
+        # echo "" >> $GITHUB_STEP_SUMMARY
 
-          # Show each service
-          show_service "server" "🖥️" "vendure-server-juniper010726" "my-shop-juniper/apps/server"
-          show_service "worker" "⚙️" "vendure-worker-juniper010726" "my-shop-juniper/apps/server"
-          show_service "storefront" "🌐" "vendure-storefront-juniper010726" "my-shop-juniper/apps/storefront"
+        # # Worker
+        # echo "## ⚙️ Worker (vendure-worker-juniper010726)" >> $GITHUB_STEP_SUMMARY
+        
+        # if [ -f "./deployment-markers/worker-last-commit.txt" ]; then
+        #   LAST_COMMIT=$(cat ./deployment-markers/worker-last-commit.txt)
+        #   LAST_SHORT=$(git rev-parse --short $LAST_COMMIT)
+        #   LAST_DATE=$(git show -s --format=%ci $LAST_COMMIT)
+        #   CHANGES=$(git diff --name-only $LAST_COMMIT $CURRENT_COMMIT -- ./my-shop-juniper/apps/server | wc -l)
+        # else
+        #   LAST_SHORT="N/A"
+        #   LAST_DATE="First deployment"
+        #   CHANGES="N/A"
+        # fi
+        
+        # echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+        # echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+        # echo "| **Last deployed** | \`${LAST_SHORT}\` (${LAST_DATE}) |" >> $GITHUB_STEP_SUMMARY
+        # echo "| **Changes detected** | ${{ needs.worker.outputs.had_changes }} |" >> $GITHUB_STEP_SUMMARY
+        # echo "| **Files changed** | ${CHANGES} |" >> $GITHUB_STEP_SUMMARY
+        # echo "| **Action taken** | ${{ needs.worker.outputs.action_taken }} |" >> $GITHUB_STEP_SUMMARY
+        
+        # if [[ "${{ needs.worker.outputs.had_changes }}" == "true" ]]; then
+        #   echo "" >> $GITHUB_STEP_SUMMARY
+        #   echo "**Changed files:**" >> $GITHUB_STEP_SUMMARY
+        #   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        #   if [ -f "./deployment-markers/worker-last-commit.txt" ]; then
+        #     git diff --name-only $LAST_COMMIT $CURRENT_COMMIT -- ./my-shop-juniper/apps/server >> $GITHUB_STEP_SUMMARY
+        #   else
+        #     echo "First deployment - all files are new" >> $GITHUB_STEP_SUMMARY
+        #   fi
+        #   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        # fi
+        # echo "" >> $GITHUB_STEP_SUMMARY
+
+        # # Storefront
+        # echo "## 🌐 Storefront (vendure-storefront-juniper010726)" >> $GITHUB_STEP_SUMMARY
+        
+        # if [ -f "./deployment-markers/storefront-last-commit.txt" ]; then
+        #   LAST_COMMIT=$(cat ./deployment-markers/storefront-last-commit.txt)
+        #   LAST_SHORT=$(git rev-parse --short $LAST_COMMIT)
+        #   LAST_DATE=$(git show -s --format=%ci $LAST_COMMIT)
+        #   CHANGES=$(git diff --name-only $LAST_COMMIT $CURRENT_COMMIT -- ./my-shop-juniper/apps/storefront | wc -l)
+        # else
+        #   LAST_SHORT="N/A"
+        #   LAST_DATE="First deployment"
+        #   CHANGES="N/A"
+        # fi
+        
+        # echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+        # echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+        # echo "| **Last deployed** | \`${LAST_SHORT}\` (${LAST_DATE}) |" >> $GITHUB_STEP_SUMMARY
+        # echo "| **Changes detected** | ${{ needs.storefront.outputs.had_changes }} |" >> $GITHUB_STEP_SUMMARY
+        # echo "| **Files changed** | ${CHANGES} |" >> $GITHUB_STEP_SUMMARY
+        # echo "| **Action taken** | ${{ needs.storefront.outputs.action_taken }} |" >> $GITHUB_STEP_SUMMARY
+        
+        # if [[ "${{ needs.storefront.outputs.had_changes }}" == "true" ]]; then
+        #   echo "" >> $GITHUB_STEP_SUMMARY
+        #   echo "**Changed files:**" >> $GITHUB_STEP_SUMMARY
+        #   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        #   if [ -f "./deployment-markers/storefront-last-commit.txt" ]; then
+        #     git diff --name-only $LAST_COMMIT $CURRENT_COMMIT -- ./my-shop-juniper/apps/storefront >> $GITHUB_STEP_SUMMARY
+        #   else
+        #     echo "First deployment - all files are new" >> $GITHUB_STEP_SUMMARY
+        #   fi
+        #   echo "\`\`\`" >> $GITHUB_STEP_SUMMARY
+        # fi
+        # echo "" >> $GITHUB_STEP_SUMMARY
