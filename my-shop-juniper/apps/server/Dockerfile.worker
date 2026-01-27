@@ -5,12 +5,41 @@ WORKDIR /usr/src/app
 # Dependencies stage
 FROM base AS deps
 COPY package.json package-lock.json* ./
-RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
+# In the above COPY statement, Keep it as is. The * in "package-lock.json*" is so that our custom error message is logged if package-lock.json isn't found.
+# Fail if package-lock.json doesn't exist
+RUN if [ ! -f package-lock.json ]; then \
+      echo ""; \
+      echo "❌ ERROR: package-lock.json not found!"; \
+      echo ""; \
+      echo "This is a container-first project. Dependencies must be generated"; \
+      echo "from within a Linux container to match the production environment."; \
+      echo ""; \
+      echo "To fix this, review the instructions in the generate-lockfiles.sh"; \
+      echo "file and in the project README to understand why and how to generate"; \
+      echo "the package-lock.json according to this project's design."; \
+      echo ""; \
+      exit 1; \
+    fi
+RUN npm ci
 
 # Development stage - for local development
 FROM base AS dev
 COPY package.json package-lock.json* ./
-RUN if [ -f package-lock.json ]; then npm ci; else npm install; fi
+# Fail if package-lock.json doesn't exist
+RUN if [ ! -f package-lock.json ]; then \
+      echo ""; \
+      echo "❌ ERROR: package-lock.json not found!"; \
+      echo ""; \
+      echo "This is a container-first project. Dependencies must be generated"; \
+      echo "from within a Linux container to match the production environment."; \
+      echo ""; \
+      echo "To fix this, review the instructions in the generate-lockfiles.sh"; \
+      echo "file and in the project README to understand why and how to generate"; \
+      echo "the package-lock.json according to this project's design."; \
+      echo ""; \
+      exit 1; \
+    fi
+RUN npm ci
 COPY . .
 CMD ["npm", "run", "dev"]
 
@@ -33,6 +62,7 @@ RUN addgroup --system --gid 1001 nodejs && \
 COPY --from=builder --chown=vendure:nodejs /usr/src/app/dist ./dist
 COPY --from=builder --chown=vendure:nodejs /usr/src/app/node_modules ./node_modules
 COPY --from=builder --chown=vendure:nodejs /usr/src/app/package.json ./package.json
+COPY --from=builder --chown=vendure:nodejs /usr/src/app/static ./static
 
 USER vendure
 
