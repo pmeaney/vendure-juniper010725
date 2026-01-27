@@ -51,6 +51,9 @@ COPY . .
 RUN npm run build
 # only Server needs the dashboard built-- not worker
 RUN npm run build:dashboard
+# Copy migrations source (TypeORM needs them)
+RUN mkdir -p ./dist/migrations
+RUN cp -r ./src/migrations/* ./dist/migrations/ 2>/dev/null || true
 
 # Production runner stage
 FROM base AS prod
@@ -66,6 +69,7 @@ COPY --from=builder --chown=vendure:nodejs /usr/src/app/dist ./dist
 COPY --from=builder --chown=vendure:nodejs /usr/src/app/node_modules ./node_modules
 COPY --from=builder --chown=vendure:nodejs /usr/src/app/package.json ./package.json
 COPY --from=builder --chown=vendure:nodejs /usr/src/app/static ./static
+COPY --from=builder --chown=vendure:nodejs /usr/src/app/src/migrations ./src/migrations
 
 USER vendure
 
