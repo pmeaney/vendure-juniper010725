@@ -348,13 +348,13 @@ jobs:
             # This was a forced deployment due to missing container
             echo "action_taken=Deployed: ${{ steps.check-changes.outputs.force_deploy_reason }}" >> $GITHUB_OUTPUT
           else
-            # This was a normal deployment due to code changes  
+            # This was a normal deployment due to code changes
             echo "action_taken=New version deployed" >> $GITHUB_OUTPUT
           fi
           echo "deploy_status=success" >> $GITHUB_ENV
 
       # Set no deployment action for when no deployment is needed
-      - name: Set no deployment action
+      - name: If no deployment taken, Set no deployment action
         if: steps.check-changes.outputs.changes == 'false'
         id: no-deployment
         run: |
