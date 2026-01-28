@@ -44,8 +44,13 @@ export const config: VendureConfig = {
         // See the README.md "Migrations" section for an explanation of
         // the `synchronize` and `migrations` options.
         synchronize: false,  // Never auto-sync in production
-        // migrations: [path.join(__dirname, './migrations/*.+(js|ts)')],
-        migrations: [path.join(__dirname, './migrations/*.js')],
+        // migrations: [path.join(__dirname, './migrations/*.+(js|ts)')], <-- for local dev
+        // migrations: [path.join(__dirname, './migrations/*.js')], <-- for prod
+        migrations: [
+          path.join(__dirname, process.env.NODE_ENV === 'production' 
+            ? './migrations/*.js' 
+            : './migrations/*.+(js|ts)')
+        ], // <-- should work for both prod & dev
         logging: false,
         database: process.env.DB_NAME,
         schema: process.env.DB_SCHEMA,
