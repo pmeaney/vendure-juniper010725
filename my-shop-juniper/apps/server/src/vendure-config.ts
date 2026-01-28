@@ -12,8 +12,10 @@ import { GraphiqlPlugin } from '@vendure/graphiql-plugin';
 import path from 'path';
 // import 'dotenv/config'; // <-- default. imports .env but I prefer to give the .env file a descriptive name
 import dotenv from 'dotenv';
+// Note: DotEnv tries the specified file first and falls back to .env automatically.
+// We use `.env.local.example.srv-wrk` for local dev.  in CICD deploy, env vars are placed in container's server dir /.env file
+// So, as long as our prod env vars are in a server's .env file, this should work in prod.
 dotenv.config({ path: '.env.local.example.srv-wrk' });
-
 const IS_DEV = process.env.APP_ENV === 'dev';
 const serverPort = +process.env.PORT || 3000;
 

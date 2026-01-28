@@ -325,7 +325,7 @@ jobs:
           # Create a temporary env file on the remote server
           echo "Creating temporary environment file..."
           ssh prod "mkdir -p ~/vendure-server-juniper010726"
-          ssh prod "echo '$SERVER_PROD_ENV' > ~/vendure-server-juniper010726/server-env-prod.env"
+          ssh prod "echo '$SERVER_PROD_ENV' > ~/vendure-server-juniper010726/.env"
 
           # Ensure Docker network exists (create if it doesn't)
           ssh prod "docker network ls --filter name=vendure-network -q | grep -q . || docker network create vendure-network"
@@ -338,11 +338,11 @@ jobs:
                       --network vendure-network \
                       --network-alias vendure-server \
                       -p 3000:3000 \
-                      --env-file ~/vendure-server-juniper010726/server-env-prod.env \
+                      --env-file ~/vendure-server-juniper010726/.env \
                       ghcr.io/${{ github.actor }}/vendure-server-juniper010726:latest"
 
           echo "Deleting temporarily created prod env file..."
-          ssh prod "rm ~/vendure-server-juniper010726/server-env-prod.env"
+          ssh prod "rm ~/vendure-server-juniper010726/.env"
 
           # Deployment successful - set appropriate action message
           if [ -n "${{ steps.check-changes.outputs.force_deploy_reason }}" ]; then
